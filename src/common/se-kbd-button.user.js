@@ -12,7 +12,7 @@
 // @include        http://superuser.com/*
 // @require        jquery-1.8.3.min.js
 //
-// @version        0.0.1
+// @version        0.0.2
 //
 // ==/UserScript==
 
