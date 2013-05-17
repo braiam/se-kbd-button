@@ -45,7 +45,7 @@ KbdButton.prototype = {
 
     // Try to find the 6th button in the toolbar (code block)
     var targetButton = $( target ).parents( ".postcell, .answercell" ).find( ".wmd-button:nth-child(6)" );
-    
+
     // If we can't find it...
     if( 0 == targetButton.length ) {
       // ...try again in 100ms
@@ -103,7 +103,11 @@ KbdButton.prototype = {
         editor.selectionStart = selectionStart;
         editor.selectionEnd = selectionEnd;
 
+        // Put focus back on editor (for Firefox mostly)
+        $( editor ).focus();
+
         inject( "StackExchange.MarkdownEditor.refreshAllPreviews" );
+
       } );
     }
   }
