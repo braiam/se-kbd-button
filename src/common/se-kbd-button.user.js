@@ -44,7 +44,7 @@ KbdButton.prototype = {
   install: function( target ) {
 
     // Try to find the 6th button in the toolbar (code block)
-    var targetButton = $( target ).parents( ".postcell, .answercell" ).find( ".wmd-button:nth-child(6)" );
+    var targetButton = $( target ).parents( ".postcell, .answercell, .post-form" ).find( ".wmd-button:nth-child(6)" );
 
     // If we can't find it...
     if( 0 == targetButton.length ) {
@@ -115,8 +115,10 @@ KbdButton.prototype = {
 
 $( function() {
   var kbdButton = new KbdButton();
-  // Install the button on this page (if there is one)
-  //kbdButton.install( $( "body" ) );
+  if( 0 == $( ".edit-post" ).length ) {
+    // Install the button on this page (if there is one)
+    kbdButton.install( $( ".wmd-container" ) );
+  }
 
   // Also attach to possible buttons that load in an editor
   $( ".edit-post" ).on( "click", function() {
