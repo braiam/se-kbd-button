@@ -18,21 +18,44 @@
 
 var $ = window.$.noConflict( true ); // Required for Opera and IE
 
+// Script injection from http://www.shesek.info/javascript/executing-code-in-the-webpage-context-from-chrome-extensions
+var inject,
+  __slice = Array.prototype.slice;
+
+inject = function() {
+  var args, fn, response, script, _i;
+  args = 2 <= arguments.length ? __slice.call( arguments, 0, _i = arguments.length - 1 ) : (_i = 0, [
+  ]), fn = arguments[_i++];
+  script = document.createElement( 'script' );
+  script.innerHTML = "Array.prototype.pop.call(document.getElementsByTagName('script')).innerText = JSON.stringify(function() {\n  try { return " + (fn.toString()) + ".apply(window, " + (JSON.stringify( args )) + "); }\n  catch(e) { return {isException: true, exception: e.toString()}; }\n}());";
+  document.body.appendChild( script );
+  if( "undefined" != script.innerText ) response = JSON.parse( script.innerText );
+  document.body.removeChild( script );
+  if( response != null ? response.isException : void 0 ) {
+    throw new Error( response.exception );
+  }
+  return response;
+};
+
 function KbdButton() {
 }
 
 KbdButton.prototype = {
-  install: function() {
+  install: function( target ) {
+
     // Try to find the 6th button in the toolbar (code block)
-    var targetButton = $( ".wmd-button:nth-child(6)" );
+    var targetButton = $( target ).parents( ".postcell, .answercell" ).find( ".wmd-button:nth-child(6)" );
+    
     // If we can't find it...
     if( 0 == targetButton.length ) {
       // ...try again in 100ms
-      setTimeout( this.install, 100 );
+      setTimeout( function( thisObj, targetObj ) {
+        thisObj.install( targetObj );
+      }, 100, this, target );
 
     } else {
       // Create our KBD button
-      var kbdToggle = $( "<li class='wmd-button' title='Keyboard Key' style='left: 125px;'><img src='http://i.stack.imgur.com/sXBE4.png' /></li>" );
+      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key' style='left: 125px;'><img src='http://i.stack.imgur.com/sXBE4.png' /></li>" );
       // Insert it after the code block button
       targetButton.after( kbdToggle );
       // Move all other buttons in the toolbar over by 25px
@@ -51,19 +74,36 @@ KbdButton.prototype = {
         var selectionStart = editor.selectionStart;
         var selectionEnd = editor.selectionEnd;
         var currentText = editor.value;
+        var selectedText = currentText.substring( selectionStart, selectionEnd );
 
-        var newText =
-          currentText.substring( 0, selectionStart )
-            + "<kbd>"
-            + currentText.substring( selectionStart, selectionEnd )
-            + "</kbd>"
-            + currentText.substring( selectionEnd, currentText.length );
+        if( selectedText.match( /\S $/ ) ) {
+          --selectionEnd;
+          selectedText = currentText.substring( selectionStart, selectionEnd );
+        }
+
+        var headText = currentText.substring( 0, selectionStart );
+        var tailText = currentText.substring( selectionEnd, currentText.length );
+
+        var newText = selectedText;
+
+        // Are we already wrapped?
+        if( newText.match( /<kbd>[^<]+<\/kbd>/ ) ) {
+          newText = newText.substring( "<kbd>".length, newText.length - "</kbd>".length );
+          selectionEnd -= "<kbd></kbd>".length;
+        } else {
+          newText = "<kbd>" + newText + "</kbd>";
+          selectionEnd += "<kbd></kbd>".length;
+        }
+
+        var newText = headText + newText + tailText;
 
         editor.value = newText;
 
         // Restore selection
         editor.selectionStart = selectionStart;
         editor.selectionEnd = selectionEnd;
+
+        inject( "StackExchange.MarkdownEditor.refreshAllPreviews" );
       } );
     }
   }
@@ -71,5 +111,11 @@ KbdButton.prototype = {
 
 $( function() {
   var kbdButton = new KbdButton();
-  kbdButton.install();
+  // Install the button on this page (if there is one)
+  //kbdButton.install( $( "body" ) );
+
+  // Also attach to possible buttons that load in an editor
+  $( ".edit-post" ).on( "click", function() {
+    kbdButton.install( this );
+  } )
 } );
