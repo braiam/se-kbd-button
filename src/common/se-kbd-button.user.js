@@ -7,9 +7,16 @@
 // @author         Oliver Salzburg, oliversalzburg (https://github.com/oliversalzburg/)
 // @license        MIT License (http://opensource.org/licenses/mit-license.php)
 //
-// @include        http://stackoverflow.com/*
-// @include        http://serverfault.com/*
-// @include        http://superuser.com/*
+// @include       http://stackoverflow.com/*
+// @include       http://meta.stackoverflow.com/*
+// @include       http://serverfault.com/*
+// @include       http://meta.serverfault.com/*
+// @include       http://superuser.com/*
+// @include       http://meta.superuser.com/*
+// @include       http://stackapps.com/*
+// @include       http://askubuntu.com/*
+// @include       http://meta.askubuntu.com/*
+// @include       http://*.stackexchange.com/*
 // @require        jquery-1.8.3.min.js
 //
 // @version        0.0.2
