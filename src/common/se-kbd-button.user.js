@@ -1,6 +1,6 @@
 ﻿// ==UserScript==
 //
-// @name           Stack Exchange KBD Button
+// @name           KBD Button for Stack Exchange sites
 // @description    Adds a button for KBD syntax to the Stack Exchange editor
 // @homepage       https://github.com/oliversalzburg/se-kbd-button
 // @namespace      https://oliversalzburg.github.com/
@@ -17,9 +17,9 @@
 // @include       http://askubuntu.com/*
 // @include       http://meta.askubuntu.com/*
 // @include       http://*.stackexchange.com/*
-// @require        jquery-1.8.3.min.js
+// @require       jquery-1.8.3.min.js
 //
-// @version        0.0.2
+// @version        0.0.3
 //
 // ==/UserScript==
 
