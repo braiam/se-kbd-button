@@ -1,4 +1,4 @@
-se-kbd-button
-=============
+KBD Button for Stack Exchange sites
+===================================
 
-Stack Exchange KBD Button
+Adds a KBD markup button to the editor on StackExchange sites
