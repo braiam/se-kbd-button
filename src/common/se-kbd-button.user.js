@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.0.3
+// @version        0.0.4
 //
 // ==/UserScript==
 
@@ -62,11 +62,11 @@ KbdButton.prototype = {
 
     } else {
       // Create our KBD button
-      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key' style='left: 125px;'><img src='http://i.stack.imgur.com/sXBE4.png' /></li>" );
+      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key &lt;kbd&gt; Alt+K' style='left: 125px;'><img src='http://i.stack.imgur.com/sXBE4.png' /></li><a accesskey='k' style='display:none; position:absolute;'>" );
       // Insert it after the code block button
       targetButton.after( kbdToggle );
       // Move all other buttons in the toolbar over by 25px
-      targetButton.nextAll().each( function( index, elem ) {
+      targetButton.nextAll( "li" ).each( function( index, elem ) {
         $( this ).attr( "style", "left:" + ( ( index + 6 ) * 25 ) + "px" );
       } );
 
@@ -115,6 +115,14 @@ KbdButton.prototype = {
 
         inject( "StackExchange.MarkdownEditor.refreshAllPreviews" );
 
+      } );
+
+      var editor = kbdToggle.parents( ".wmd-container" ).children( "textarea.wmd-input" );
+      editor.on( "keydown", function( event ) {
+        if( event.altKey && event.which == 75 ) {
+          kbdToggle.click();
+          event.preventDefault();
+        }
       } );
     }
   }
