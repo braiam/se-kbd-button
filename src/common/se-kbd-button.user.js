@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.0.8
+// @version        0.0.9
 //
 // ==/UserScript==
 
@@ -139,19 +139,13 @@ KbdButton.prototype = {
 
 $( function() {
   var kbdButton = new KbdButton();
-  // If there are no "edit" links on the page, install the button on the main WMD container.
-  // This is usually the case on the "Ask a question" page
-  if( 0 == $( ".edit-post" ).length ) {
-    kbdButton.install( $( ".wmd-container" ) );
-  }
-
   // Also attach to possible buttons that load in an editor
   $( ".edit-post" ).on( "click", function() {
     kbdButton.install( this );
   } );
 
   // Is there already a "post editor" on the page?
-  // This is usually the case with the "Your Answer" part on a question page.
+  // This is usually the case with the "Your Answer" part on a question page or the "Ask a Question" page.
   if( 0 < $( "#post-editor" ).length ) {
     kbdButton.install( $( "#post-editor" ) );
   }
