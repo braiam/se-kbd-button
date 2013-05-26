@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.0.9
+// @version        0.1.0
 //
 // ==/UserScript==
 
@@ -75,7 +75,11 @@ KbdButton.prototype = {
       // Insert it after the code block button
       targetButton.after( kbdToggle );
       // Move all other buttons in the toolbar over by 25px
-      targetButton.nextAll( "li" ).each( function( index, elem ) {
+      var listItems = targetButton.nextAll( "li" );
+      listItems.each( function( index, elem ) {
+        // Leave the help button untouched
+        if( index == listItems.length - 1 ) return;
+        // Move all other items into the correct position
         $( this ).attr( "style", "left:" + ( ( index + 6 ) * 25 ) + "px" );
       } );
 
