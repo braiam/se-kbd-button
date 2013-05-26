@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.0.5
+// @version        0.0.7
 //
 // ==/UserScript==
 
@@ -62,14 +62,14 @@ KbdButton.prototype = {
 
     } else {
       // Create our KBD button
-      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key &lt;kbd&gt; Alt+K' style='left: 125px;'><span style='background-image:url(http://i.stack.imgur.com/GywH0.png)'></span></li><a accesskey='k' style='display:none; position:absolute;'>" );
+      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key &lt;kbd&gt; Alt+K' style='left: 125px;'><span style='background-image:url(http://i.stack.imgur.com/GywH0.png) !important'></span></li><a accesskey='k' style='display:none; position:absolute;'>" );
       // Add the mouse-over effect
       kbdToggle.hover(
         function(event){
-          $( "span", this ).attr( "style", "background-image:url(http://i.stack.imgur.com/GywH0.png); background-position:0 -20px" );
+          $( "span", this ).attr( "style", "background-image:url(http://i.stack.imgur.com/GywH0.png) !important; background-position:0 -20px" );
         },
         function(event){
-          $( "span", this ).attr( "style", "background-image:url(http://i.stack.imgur.com/GywH0.png); background-position:0 0px" );
+          $( "span", this ).attr( "style", "background-image:url(http://i.stack.imgur.com/GywH0.png) !important; background-position:0 0px" );
         }
       );
       // Insert it after the code block button
