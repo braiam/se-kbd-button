@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.1.0
+// @version        0.1.1
 //
 // ==/UserScript==
 
@@ -48,8 +48,26 @@ function KbdButton() {
 }
 
 KbdButton.prototype = {
-  install: function( target ) {
+  installHotkey: function() {
+    // Install a single anchor in the body to catch our accessor.
+    var accessor = $( "<a accesskey='k' style='display:none; position:absolute;'>" );
+    $( "body" ).append( accessor );
 
+    $( document ).on( "keydown", function( event ) {
+      // If Alt+K was pressed...
+      if( event.altKey && event.which == 75 ) {
+        // ...find the parent KBD toggle button.
+        var kbdToggle = $( document.activeElement ).parents( ".wmd-container" ).find( "li.kbd-button" );
+        //console.log(kbdToggle);
+        if( kbdToggle.length > 0 ) {
+          kbdToggle.click();
+          event.preventDefault();
+        }
+      }
+    } );
+  },
+
+  install: function( target ) {
     // Try to find the 6th button in the toolbar (code block)
     var targetButton = $( target ).parents( ".postcell, .answercell, .post-form" ).find( ".wmd-button:nth-child(6)" );
 
@@ -62,7 +80,7 @@ KbdButton.prototype = {
 
     } else {
       // Create our KBD button
-      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key &lt;kbd&gt; Alt+K' style='left: 125px;'><span style='background-image:url(http://i.stack.imgur.com/GywH0.png) !important'></span></li><a accesskey='k' style='display:none; position:absolute;'>" );
+      var kbdToggle = $( "<li class='wmd-button kbd-button' title='Keyboard Key &lt;kbd&gt; Alt+K' style='left: 125px;'><span style='background-image:url(http://i.stack.imgur.com/GywH0.png) !important'></span></li>" );
       // Add the mouse-over effect
       kbdToggle.hover(
         function(event){
@@ -127,15 +145,6 @@ KbdButton.prototype = {
         $( editor ).focus();
 
         inject( "StackExchange.MarkdownEditor.refreshAllPreviews" );
-
-      } );
-
-      var editor = kbdToggle.parents( ".wmd-container" ).children( "textarea.wmd-input" );
-      editor.on( "keydown", function( event ) {
-        if( event.altKey && event.which == 75 ) {
-          kbdToggle.click();
-          event.preventDefault();
-        }
       } );
     }
   }
@@ -153,4 +162,7 @@ $( function() {
   if( 0 < $( "#post-editor" ).length ) {
     kbdButton.install( $( "#post-editor" ) );
   }
+
+  // Install out hotkey hook.
+  kbdButton.installHotkey();
 } );
