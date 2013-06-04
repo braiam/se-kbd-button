@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.1.1
+// @version        0.1.2
 //
 // ==/UserScript==
 
@@ -58,7 +58,6 @@ KbdButton.prototype = {
       if( event.altKey && event.which == 75 ) {
         // ...find the parent KBD toggle button.
         var kbdToggle = $( document.activeElement ).parents( ".wmd-container" ).find( "li.kbd-button" );
-        //console.log(kbdToggle);
         if( kbdToggle.length > 0 ) {
           kbdToggle.click();
           event.preventDefault();
@@ -69,7 +68,7 @@ KbdButton.prototype = {
 
   install: function( target ) {
     // Try to find the 6th button in the toolbar (code block)
-    var targetButton = $( target ).parents( ".postcell, .answercell, .post-form" ).find( ".wmd-button:nth-child(6)" );
+    var targetButton = $( target ).parents( ".postcell, .answercell, .post-form, .inline-post" ).find( ".wmd-button:nth-child(6)" );
 
     // If we can't find it...
     if( 0 == targetButton.length ) {
@@ -152,9 +151,14 @@ KbdButton.prototype = {
 
 $( function() {
   var kbdButton = new KbdButton();
-  // Also attach to possible buttons that load in an editor
+  // Attach to links that will load an editor in-place (like edit post links).
   $( ".edit-post" ).on( "click", function() {
     kbdButton.install( this );
+  } );
+
+  // Attach to edit button in the review queue
+  $( document ).on( "click", ".review-actions input[value='Edit']", function() {
+    kbdButton.install( ".editing-review-content .post-editor" );
   } );
 
   // Is there already a "post editor" on the page?
