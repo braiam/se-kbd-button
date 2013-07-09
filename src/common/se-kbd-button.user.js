@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.1.2
+// @version        0.1.4
 //
 // ==/UserScript==
 
@@ -69,6 +69,11 @@ KbdButton.prototype = {
   install: function( target ) {
     // Try to find the 6th button in the toolbar (code block)
     var targetButton = $( target ).parents( ".postcell, .answercell, .post-form, .inline-post" ).find( ".wmd-button:nth-child(6)" );
+
+    // If we can't find a button, do another check for editors in the review view
+    if( 0 == targetButton.length ) {
+      targetButton = $(".review-content.editing-review-content" ).find( ".wmd-button:nth-child(6)" );
+    }
 
     // If we can't find it...
     if( 0 == targetButton.length ) {
@@ -156,8 +161,16 @@ $( function() {
     kbdButton.install( this );
   } );
 
+  // Some review queue questions require us to bind to an earlier event.
+  // The click event will never reach our listener, so we bind on 'mouseup'.
+  $( document ).on( "mouseup", ".reviewable-post .edit-post", function( e ) {
+    if( e.which != 1 ) return;
+
+    kbdButton.install( this );
+  } );
+
   // Attach to edit button in the review queue
-  $( document ).on( "click", ".review-actions input[value='Edit']", function() {
+  $( document ).on( "click", ".review-actions input[value='Edit'], .review-actions input[value='Improve']", function() {
     kbdButton.install( ".editing-review-content .post-editor" );
   } );
 
