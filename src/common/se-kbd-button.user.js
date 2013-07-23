@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.1.4
+// @version        0.1.5
 //
 // ==/UserScript==
 
