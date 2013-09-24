@@ -19,7 +19,7 @@
 // @include       http://*.stackexchange.com/*
 // @require       jquery-1.8.3.min.js
 //
-// @version        0.1.7
+// @version        0.1.8
 //
 // ==/UserScript==
 
@@ -155,8 +155,6 @@ KbdButton.prototype = {
 }
 
 $( function() {
-  console.log("Installing button");
-  debugger;
   var kbdButton = new KbdButton();
   // Attach to links that will load an editor in-place (like edit post links).
   $( ".edit-post" ).on( "click", function() {

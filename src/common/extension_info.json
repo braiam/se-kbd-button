@@ -5,6 +5,6 @@
   "description": "Adds a button for KBD syntax to the Stack Exchange editor",
   "creator": "Oliver Salzburg",
   "homepage_url": "https://github.com/oliversalzburg/se-kbd-button",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "name": "KBD Button for Stack Exchange sites"
 }
