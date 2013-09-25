@@ -5,7 +5,7 @@
     
   <Description about="urn:mozilla:install-manifest">
     <em:id>{0CD782A3-E906-4CD9-9107-CE5E030DEBD4}</em:id>
-    <em:version>0.1.8</em:version>
+    <em:version>@ant-version@</em:version>
     <em:type>2</em:type>
 
     <em:targetApplication>
@@ -16,10 +16,10 @@
       </Description>
     </em:targetApplication>
         
-    <em:name>KBD Button for Stack Exchange sites</em:name>
-    <em:description>Adds a button for KBD syntax to the Stack Exchange editor</em:description>
-    <em:creator>Oliver Salzburg</em:creator>
-    <em:homepageURL>https://github.com/oliversalzburg/se-kbd-button</em:homepageURL>
+    <em:name>@ant-name@</em:name>
+    <em:description>@ant-description@</em:description>
+    <em:creator>@ant-author@</em:creator>
+    <em:homepageURL>@ant-homepage@</em:homepageURL>
     
     <em:bootstrap>false</em:bootstrap>
     

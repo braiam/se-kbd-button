@@ -1,8 +1,8 @@
 ﻿// ==UserScript==
 //
-// @name           KBD Button for Stack Exchange sites
-// @description    Adds a button for KBD syntax to the Stack Exchange editor
-// @homepage       https://github.com/oliversalzburg/se-kbd-button
+// @name           @ant-name@
+// @description    @ant-description@
+// @homepage       @ant-homepage@
 // @namespace      https://oliversalzburg.github.com/
 // @author         Oliver Salzburg, oliversalzburg (https://github.com/oliversalzburg/)
 // @license        MIT License (http://opensource.org/licenses/mit-license.php)
