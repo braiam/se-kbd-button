@@ -1,4 +1,5 @@
-﻿// ==UserScript==
+﻿/** @preserve
+// ==UserScript==
 //
 // @name           @ant-name@
 // @description    @ant-description@
@@ -12,6 +13,7 @@
 // @version       @ant-version@
 //
 // ==/UserScript==
+*/
 
 // Script injection from http://www.shesek.info/javascript/executing-code-in-the-webpage-context-from-chrome-extensions
 var inject,

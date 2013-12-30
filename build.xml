@@ -40,6 +40,9 @@
   <!-- Location of buildcrx. Used to pack the Chrome extension into a CRX.
        See: https://code.google.com/p/buildcrx/ -->
   <property name="sdk.buildcrx" value="${basedir}/SDK/buildcrx.exe"/>
+  <!-- Location of Google Closure Compiler. Used to pack userscript.
+       See: https://developers.google.com/closure/compiler/ -->
+  <property name="sdk.closurecompiler" value="${basedir}/SDK/compiler.jar"/>
 
   <!-- Alias target to build all targets. -->
   <target name="all" depends="preinit, userscript, chrome, firefox, clean"/>
@@ -99,6 +102,27 @@
 
   <!-- Build the userscript. -->
   <target name="userscript" depends="preinit, copy-userscript">
+    <!-- Create a fileset that includes only the source userscript. -->
+    <fileset dir="${buildDir}" id="userscript-path">
+      <include name="*.user.js"/>
+    </fileset>
+    <!-- Add a "min" into the filename for the output filename. -->
+    <pathconvert property="userscript-path-out" refid="userscript-path">
+      <mapper>
+        <regexpmapper from="(.*?)\.user.js$" to="\1.min.user.js"/>
+      </mapper>
+    </pathconvert>
+    <!-- Convert the path to a property. -->
+    <pathconvert property="userscript-path" refid="userscript-path"/>
+    <!-- Invoke the Google Closure Compiler with the generated file names. -->
+    <java jar="${sdk.closurecompiler}" fork="true">
+      <arg value="--js"/>
+      <arg value="${userscript-path}"/>
+      <arg value="--js_output_file"/>
+      <arg value="${userscript-path-out}"/>
+    </java>
+
+    <!-- Move the compressed and the uncompressed version to the output folder. -->
     <move todir="${dist}">
       <fileset dir="${buildDir}">
         <include name="*.user.js"/>
@@ -106,6 +130,7 @@
     </move>
     <antcall target="clean"/>
   </target>
+
   <!-- Copy the data required for the userscript to the build directory. -->
   <target name="copy-userscript">
     <antcall target="copy"/>
